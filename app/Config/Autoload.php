@@ -88,5 +88,6 @@ class Autoload extends AutoloadConfig
      *
      * @var list<string>
      */
-    public $helpers = [];
+    public $helpers = ['thomson']; // jika nama file-nya thomson_helper.php
+
 }
