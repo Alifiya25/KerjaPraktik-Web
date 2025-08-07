@@ -1,0 +1,93 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #fff;
+}
+
+header {
+    background: linear-gradient(to right, #009FE3, #00B1C9);
+    color: #fff;
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    height: 48px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 24px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-masuk {
+    background-color: white;
+    color: #009FE3;
+    padding: 8px 16px;
+    border-radius: 8px;
+}
+
+main {
+    max-width: 1200px;
+    margin: auto;
+    padding: 40px 20px;
+}
+
+.hero {
+    position: relative;
+    height: 450px;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.slider {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+.hero-text {
+    position: absolute;
+    z-index: 2;
+    bottom: 30px;
+    left: 50px;
+    color: white;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 16px 24px;
+    border-radius: 8px;
+}
+
+.about, .contact {
+    padding: 40px 0;
+    color: #333;
+}
+
+footer {
+    background: linear-gradient(to right, #009FE3, #00B1C9);
+    text-align: center;
+    color: white;
+    padding: 20px;
+    margin-top: 60px;
+}
