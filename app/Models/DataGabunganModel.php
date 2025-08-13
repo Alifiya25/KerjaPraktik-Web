@@ -26,6 +26,7 @@ class DataGabunganModel extends Model
 
         foreach ($results as $row) {
             $final[] = [
+                'pengukuran_id' => $row['id'],
                 'pengukuran' => [
                     'tahun' => $row['tahun'],
                     'bulan' => $row['bulan'],
@@ -43,8 +44,11 @@ class DataGabunganModel extends Model
                 ],
                 'bocoran' => [
                     'elv_624_t1' => $row['elv_624_t1'],
+                    'elv_624_t1_kode' => $row['elv_624_t1_kode'],
                     'elv_615_t2' => $row['elv_615_t2'],
+                    'elv_615_t2_kode' => $row['elv_615_t2_kode'],
                     'pipa_p1' => $row['pipa_p1'],
+                    'pipa_p1_kode' => $row['pipa_p1_kode'],
                 ],
                 'sr' => [
                     'sr_1_kode' => $row['sr_1_kode'],

@@ -13,6 +13,9 @@ $routes->get('/grafik-data', 'MenuController::grafikData');
 $routes->get('/data/tabel_thomson', 'ExcelViewerController::tabelThomson');
 $routes->get('lihat/tabel_ambang', 'ExcelViewerController::tabelAmbangBatas');
 
+$routes->get('perhitungan-sr/hitung/(:num)', 'PerhitunganSRController::hitung/$1');
+
+
 
 
 

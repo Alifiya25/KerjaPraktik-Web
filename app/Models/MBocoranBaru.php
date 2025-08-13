@@ -6,5 +6,11 @@ class MBocoranBaru extends Model
 {
     protected $table = 't_bocoran_baru';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['pengukuran_id', 'elv_624_t1', 'elv_615_t2', 'pipa_p1'];
+    protected $allowedFields = [
+    'pengukuran_id',
+    'elv_624_t1', 'elv_624_t1_kode',
+    'elv_615_t2', 'elv_615_t2_kode',
+    'pipa_p1', 'pipa_p1_kode'
+];
+
 }
