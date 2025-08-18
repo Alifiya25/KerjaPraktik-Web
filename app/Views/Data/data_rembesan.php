@@ -27,17 +27,15 @@
 
             <!-- Navigasi Cepat -->
             <div class="btn-group mb-3" role="group" aria-label="Navigasi Tabel">
-                <a href=<?= base_url('input-data') ?> class="btn btn-outline-primary">
+                <a href="<?= base_url('input-data') ?>" class="btn btn-outline-primary">
                     <i class="fas fa-table"></i> Tabel Gabungan
                 </a>
                 <a href="<?= base_url('data/tabel_thomson') ?>" class="btn btn-outline-success">
                     <i class="fas fa-eye"></i> Lihat Tabel Thomson
                 </a>
-
                 <a href="<?= base_url('lihat/tabel_ambang') ?>" class="btn btn-outline-warning">
-                <i class="fas fa-ruler"></i> Rumus Ambang Batas
+                    <i class="fas fa-ruler"></i> Rumus Ambang Batas
                 </a>
-
             </div>
 
             <div class="table-controls">
@@ -123,7 +121,8 @@
                         <th colspan="6" rowspan="2" class="section-bocoran">Bocoran Baru</th>
                         <th colspan="5" class="section-bocoran">Perhitungan Q Thompson Weir (Liter/Menit)</th>
                         <th rowspan="2" colspan="<?= count($srList) ?>" class="section-sr">Perhitungan Q SR (Liter/Menit)</th>
-                        <th rowspan="2" colspan="<?= count($srList) ?>" class="section-sr"></th>
+                        <th rowspan="2" colspan="3" class="section-sr">Perhitungan Bocoran Baru</th>
+                        <th rowspan="2" colspan="2" class="section-inti">Perhitungan Inti Galery</th>
                     </tr>
 
                     <!-- Row 2 -->
@@ -156,12 +155,15 @@
                         <th>B-5</th>
                         
                         <?php foreach ($srList as $num): ?>
-                            <th>SR <?= $num ?></th> <!-- ✅ Baris Perhitungan Q SR -->
+                            <th>SR <?= $num ?></th>
                         <?php endforeach; ?>
-                    
+
                         <th>Talang 1</th>
                         <th>Talang 2</th>
                         <th>Pipa</th>
+
+                        <th>A1</th>
+                        <th>Ambang</th>
                     </tr>
                 </thead>
 
@@ -216,30 +218,46 @@
                             <td><?= $data['bocoran']['pipa_p1'] ?? '-' ?></td>
                             <td><?= $data['bocoran']['pipa_p1_kode'] ?? '-' ?></td>
 
-                            <!-- Tambahan: Data Perhitungan Thomson Weir -->
+                            <!-- Perhitungan Thomson -->
                             <td><?= $data['perhitungan_thomson']['r'] ?? '-' ?></td>
                             <td><?= $data['perhitungan_thomson']['l'] ?? '-' ?></td>
                             <td><?= $data['perhitungan_thomson']['b1'] ?? '-' ?></td>
                             <td><?= $data['perhitungan_thomson']['b3'] ?? '-' ?></td>
                             <td><?= $data['perhitungan_thomson']['b5'] ?? '-' ?></td>
 
+                            <!-- Perhitungan SR -->
                             <?php foreach ($srList as $num): ?>
-    <td>
-        <?php
-            $nilaiSR = $data['sr']["sr_{$num}_nilai"] ?? null;
-            $kodeSR  = $data['sr']["sr_{$num}_kode"] ?? null;
-            $qSR     = perhitunganQ_sr($nilaiSR, $kodeSR);
+                                <td>
+                                    <?php
+                                        $nilaiSR = $data['sr']["sr_{$num}_nilai"] ?? null;
+                                        $kodeSR  = $data['sr']["sr_{$num}_kode"] ?? null;
+                                        $qSR     = perhitunganQ_sr($nilaiSR, $kodeSR);
 
-            echo ($qSR === 0)
-                ? '-'
-                : number_format($qSR, 6, '.', '');
-        ?>
-    </td>
-<?php endforeach; ?>
+                                        echo ($qSR === 0)
+                                            ? '-'
+                                            : number_format($qSR, 6, '.', '');
+                                    ?>
+                                </td>
+                            <?php endforeach; ?>
 
+                            <!-- Perhitungan Bocoran Baru -->
+                            <td><?= ($data['perhitungan_bocoran']['talang1'] ?? 0) == 0 
+                                    ? '-' 
+                                    : number_format($data['perhitungan_bocoran']['talang1'], 2, '.', ''); ?></td>
+                            <td><?= ($data['perhitungan_bocoran']['talang2'] ?? 0) == 0 
+                                    ? '-' 
+                                    : number_format($data['perhitungan_bocoran']['talang2'], 2, '.', ''); ?></td>
+                            <td><?= ($data['perhitungan_bocoran']['pipa'] ?? 0) == 0 
+                                    ? '-' 
+                                    : number_format($data['perhitungan_bocoran']['pipa'], 2, '.', ''); ?></td>
 
-
-
+                            <!-- ✅ Perhitungan Inti Galery -->
+                            <td><?= isset($data['perhitungan_inti']['a1']) && $data['perhitungan_inti']['a1'] != 0
+                                    ? number_format($data['perhitungan_inti']['a1'], 2, '.', '')
+                                    : '-'; ?></td>
+                            <td><?= isset($data['perhitungan_inti']['ambang']) && $data['perhitungan_inti']['ambang'] != 0
+                                    ? number_format($data['perhitungan_inti']['ambang'], 2, '.', '')
+                                    : '-'; ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -261,85 +279,5 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const tahunFilter = document.getElementById('tahunFilter');
-            const bulanFilter = document.getElementById('bulanFilter');
-            const periodeFilter = document.getElementById('periodeFilter');
-            const searchInput = document.getElementById('searchInput');
-            const resetFilter = document.getElementById('resetFilter');
-            const rows = document.querySelectorAll('tbody tr');
-
-            function applyFilters() {
-                const tahunVal = tahunFilter.value.toLowerCase();
-                const bulanVal = bulanFilter.value.toLowerCase();
-                const periodeVal = periodeFilter.value.toLowerCase();
-                const searchVal = searchInput.value.toLowerCase();
-
-                rows.forEach(row => {
-                    const cells = row.querySelectorAll('td');
-                    const tahun = cells[0]?.textContent.toLowerCase() || '';
-                    const bulan = cells[1]?.textContent.toLowerCase() || '';
-                    const periode = cells[2]?.textContent.toLowerCase() || '';
-                    const allText = row.textContent.toLowerCase();
-
-                    const match = (
-                        (tahunVal === '' || tahun === tahunVal) &&
-                        (bulanVal === '' || bulan === bulanVal) &&
-                        (periodeVal === '' || periode === periodeVal) &&
-                        allText.includes(searchVal)
-                    );
-
-                    row.style.display = match ? '' : 'none';
-                });
-            }
-
-            [tahunFilter, bulanFilter, periodeFilter].forEach(el => el.addEventListener('change', applyFilters));
-            searchInput.addEventListener('input', applyFilters);
-
-            resetFilter.addEventListener('click', () => {
-                tahunFilter.value = '';
-                bulanFilter.value = '';
-                periodeFilter.value = '';
-                searchInput.value = '';
-                applyFilters();
-            });
-
-            // Export Excel
-            document.getElementById('exportExcel').addEventListener('click', () => {
-                const wb = XLSX.utils.table_to_book(document.getElementById('exportTable'), { sheet: "Sheet 1" });
-                XLSX.writeFile(wb, 'Data_Gabungan.xlsx');
-            });
-
-            // Export PDF
-            document.getElementById('exportPDF').addEventListener('click', () => {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF({ orientation: 'landscape' });
-
-                doc.setFontSize(16);
-                doc.text('Data Gabungan Semua Tabel', 14, 15);
-                doc.setFontSize(10);
-                doc.text(`Dicetak pada: ${new Date().toLocaleString()}`, 14, 20);
-
-                doc.autoTable({
-                    html: '#exportTable',
-                    startY: 25,
-                    styles: {
-                        fontSize: 7,
-                        cellPadding: 2,
-                        overflow: 'linebreak'
-                    },
-                    headStyles: {
-                        fillColor: [52, 152, 219],
-                        textColor: 255
-                    }
-                });
-
-                doc.save('Data_Gabungan.pdf');
-            });
-        });
-    </script>
 </body>
 </html>
