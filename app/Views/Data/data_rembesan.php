@@ -46,7 +46,7 @@
             </div>
         </div>
 
-        <!-- Filter Section -->
+       <!-- Filter Section -->
         <div class="filter-section">
             <h5><i class="fas fa-filter me-2"></i>Filter Data</h5>
             <div class="filter-group">
@@ -128,7 +128,6 @@
                         <th rowspan="2" colspan="1" class="section-inti">Perhitungan Tebing Kanan</th>
                         <th rowspan="2" colspan="1" class="section-inti">Total Bocoran</th>
                         <th rowspan="2" colspan="1" class="section-inti">Batasan Maksimal (Tahun)</th>
-                        
                     </tr>
 
                     <!-- Row 2 -->
@@ -190,11 +189,10 @@
                     $prevTahun = null;
                     $tahunCounts = [];
 
+                    // Hitung jumlah baris per Tahun
                     foreach ($dataGabungan as $data) {
                         $tahun = $data['pengukuran']['tahun'] ?? '-';
-                        if (!isset($tahunCounts[$tahun])) {
-                            $tahunCounts[$tahun] = 0;
-                        }
+                        if (!isset($tahunCounts[$tahun])) $tahunCounts[$tahun] = 0;
                         $tahunCounts[$tahun]++;
                     }
 
@@ -202,15 +200,17 @@
 
                     foreach ($dataGabungan as $index => $data):
                         $tahun = $data['pengukuran']['tahun'] ?? '-';
+                        $bulan = $data['pengukuran']['bulan'] ?? '-';
+                        $periode = $data['pengukuran']['periode'] ?? '-';
                     ?>
-                        <tr>
+                        <tr data-tahun="<?= $tahun ?>" data-bulan="<?= $bulan ?>" data-periode="<?= $periode ?>">
                             <?php if (!isset($tahunRowspans[$tahun])): ?>
                                 <td rowspan="<?= $tahunCounts[$tahun] ?>"><?= $tahun ?></td>
                                 <?php $tahunRowspans[$tahun] = true; ?>
                             <?php endif; ?>
 
-                            <td><?= $data['pengukuran']['bulan'] ?? '-' ?></td>
-                            <td><?= $data['pengukuran']['periode'] ?? '-' ?></td>
+                            <td><?= $bulan ?></td>
+                            <td><?= $periode ?></td>
                             <td><?= $data['pengukuran']['tanggal'] ?? '-' ?></td>
                             <td><?= $data['pengukuran']['tma_waduk'] ?? '-' ?></td>
                             <td><?= $data['pengukuran']['curah_hujan'] ?? '-' ?></td>
@@ -250,62 +250,34 @@
                                         $nilaiSR = $data['sr']["sr_{$num}_nilai"] ?? null;
                                         $kodeSR  = $data['sr']["sr_{$num}_kode"] ?? null;
                                         $qSR     = perhitunganQ_sr($nilaiSR, $kodeSR);
-
-                                        echo ($qSR === 0)
-                                            ? '-'
-                                            : number_format($qSR, 6, '.', '');
+                                        echo ($qSR === 0) ? '-' : number_format($qSR, 6, '.', '');
                                     ?>
                                 </td>
                             <?php endforeach; ?>
 
                             <!-- Perhitungan Bocoran Baru -->
-                            <td><?= ($data['perhitungan_bocoran']['talang1'] ?? 0) == 0 
-                                    ? '-' 
-                                    : number_format($data['perhitungan_bocoran']['talang1'], 2, '.', ''); ?></td>
-                            <td><?= ($data['perhitungan_bocoran']['talang2'] ?? 0) == 0 
-                                    ? '-' 
-                                    : number_format($data['perhitungan_bocoran']['talang2'], 2, '.', ''); ?></td>
-                            <td><?= ($data['perhitungan_bocoran']['pipa'] ?? 0) == 0 
-                                    ? '-' 
-                                    : number_format($data['perhitungan_bocoran']['pipa'], 2, '.', ''); ?></td>
+                            <td><?= ($data['perhitungan_bocoran']['talang1'] ?? 0) == 0 ? '-' : number_format($data['perhitungan_bocoran']['talang1'], 2, '.', ''); ?></td>
+                            <td><?= ($data['perhitungan_bocoran']['talang2'] ?? 0) == 0 ? '-' : number_format($data['perhitungan_bocoran']['talang2'], 2, '.', ''); ?></td>
+                            <td><?= ($data['perhitungan_bocoran']['pipa'] ?? 0) == 0 ? '-' : number_format($data['perhitungan_bocoran']['pipa'], 2, '.', ''); ?></td>
 
-                            <!-- ✅ Perhitungan Inti Galery -->
-                            <td><?= isset($data['perhitungan_inti']['a1']) && $data['perhitungan_inti']['a1'] != 0
-                                    ? number_format($data['perhitungan_inti']['a1'], 2, '.', '')
-                                    : '-'; ?>
-                            </td>
-                            <td><?= isset($data['perhitungan_inti']['ambang_a1'])
-                                    ? number_format($data['perhitungan_inti']['ambang_a1'], 2, '.', '')
-                                    : '-'; ?>
-                            </td>
+                            <!-- Perhitungan Inti Galery -->
+                            <td><?= isset($data['perhitungan_inti']['a1']) && $data['perhitungan_inti']['a1'] != 0 ? number_format($data['perhitungan_inti']['a1'], 2, '.', '') : '-'; ?></td>
+                            <td><?= isset($data['perhitungan_inti']['ambang_a1']) ? number_format($data['perhitungan_inti']['ambang_a1'], 2, '.', '') : '-'; ?></td>
                             
-                            <!-- ✅ Perhitungan Spillway -->
+                            <!-- Perhitungan Spillway -->
                             <td><?= $data['perhitungan_spillway']['B3'] ?? '-' ?></td>
-                            <td><?= isset($data['perhitungan_spillway']['ambang']) 
-                                    ? number_format($data['perhitungan_spillway']['ambang'], 2) 
-                                    : '-' ?>
-                            </td>
+                            <td><?= isset($data['perhitungan_spillway']['ambang']) ? number_format($data['perhitungan_spillway']['ambang'], 2) : '-' ?></td>
 
-                            <!-- ✅ Perhitungan Tebing Kanan -->
-                            <td><?= isset($data['perhitungan_tebing_kanan']['sr']) 
-                                    ? number_format($data['perhitungan_tebing_kanan']['sr'], 2) 
-                                    : '-' ?>
-                            </td>
-                            <td><?= isset($data['perhitungan_tebing_kanan']['ambang']) 
-                                    ? number_format($data['perhitungan_tebing_kanan']['ambang'], 2) 
-                                    : '-' ?>
-                            </td>
-
+                            <!-- Perhitungan Tebing Kanan -->
+                            <td><?= isset($data['perhitungan_tebing_kanan']['sr']) ? number_format($data['perhitungan_tebing_kanan']['sr'], 2) : '-' ?></td>
+                            <td><?= isset($data['perhitungan_tebing_kanan']['ambang']) ? number_format($data['perhitungan_tebing_kanan']['ambang'], 2) : '-' ?></td>
                             <td><?= $data['perhitungan_tebing_kanan']['b5'] ?? '-' ?></td>
 
-                            <!-- ✅ Perhitungan Total Bocoran -->
-                             <td><?= isset($data['perhitungan_total_bocoran']['r1']) ? number_format($data['perhitungan_total_bocoran']['r1'], 2) : '-' ?></td>
+                            <!-- Perhitungan Total Bocoran -->
+                            <td><?= isset($data['perhitungan_total_bocoran']['r1']) ? number_format($data['perhitungan_total_bocoran']['r1'], 2) : '-' ?></td>
 
-                             <!-- ✅ Perhitungan Batasan Maksimum -->
-                             <td><?= isset($data['batas_maksimal']) ? number_format($data['batas_maksimal'], 2) : '-' ?></td>
-
-
-                            </td>
+                            <!-- Perhitungan Batasan Maksimum -->
+                            <td><?= isset($data['batas_maksimal']) ? number_format($data['batas_maksimal'], 2) : '-' ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -326,6 +298,113 @@
     <?= $this->include('layouts/footer'); ?>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const tahunFilter = document.getElementById('tahunFilter');
+    const bulanFilter = document.getElementById('bulanFilter');
+    const periodeFilter = document.getElementById('periodeFilter');
+    const resetFilter = document.getElementById('resetFilter');
+    const tableBody = document.querySelector('#exportTable tbody');
+    const rows = tableBody.querySelectorAll('tr');
+    const displayedIds = new Set(); // Menyimpan ID data yang sudah ditampilkan
+
+    // Fungsi filter
+    function filterTable() {
+        const tahunVal = tahunFilter.value;
+        const bulanVal = bulanFilter.value;
+        const periodeVal = periodeFilter.value;
+
+        tableBody.querySelectorAll('tr').forEach(row => {
+            const tahun = row.dataset.tahun;
+            const bulan = row.dataset.bulan;
+            const periode = row.dataset.periode;
+
+            if ((tahunVal === '' || tahun === tahunVal) &&
+                (bulanVal === '' || bulan === bulanVal) &&
+                (periodeVal === '' || periode === periodeVal)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    tahunFilter.addEventListener('change', filterTable);
+    bulanFilter.addEventListener('change', filterTable);
+    periodeFilter.addEventListener('change', filterTable);
+
+    resetFilter.addEventListener('click', () => {
+        tahunFilter.value = '';
+        bulanFilter.value = '';
+        periodeFilter.value = '';
+        filterTable();
+    });
+
+    // Fungsi load data baru via AJAX
+    async function fetchNewData() {
+        try {
+            const response = await fetch('<?= base_url('data/get-new') ?>'); // endpoint PHP mengembalikan JSON data baru
+            const data = await response.json();
+
+            data.forEach(rowData => {
+                if (!displayedIds.has(rowData.id)) {
+                    displayedIds.add(rowData.id);
+
+                    const tr = document.createElement('tr');
+                    tr.dataset.tahun = rowData.pengukuran.tahun;
+                    tr.dataset.bulan = rowData.pengukuran.bulan;
+                    tr.dataset.periode = rowData.pengukuran.periode;
+
+                    // Contoh isi kolom, sesuaikan semua kolom tabel Anda
+                    tr.innerHTML = `
+                        <td>${rowData.pengukuran.tahun}</td>
+                        <td>${rowData.pengukuran.bulan}</td>
+                        <td>${rowData.pengukuran.periode}</td>
+                        <td>${rowData.pengukuran.tanggal ?? '-'}</td>
+                        <td>${rowData.pengukuran.tma_waduk ?? '-'}</td>
+                        <td>${rowData.pengukuran.curah_hujan ?? '-'}</td>
+                        <td>${rowData.thomson.a1_r ?? '-'}</td>
+                        <td>${rowData.thomson.a1_l ?? '-'}</td>
+                        <td>${rowData.thomson.b1 ?? '-'}</td>
+                        <td>${rowData.thomson.b3 ?? '-'}</td>
+                        <td>${rowData.thomson.b5 ?? '-'}</td>
+                        <!-- Tambahkan kolom lain sesuai tabel -->
+                    `;
+                    tableBody.appendChild(tr);
+                    filterTable(); // Terapkan filter jika ada
+                }
+            });
+        } catch (err) {
+            console.error('Gagal fetch data baru:', err);
+        }
+    }
+
+    // Polling setiap 5 detik
+    setInterval(fetchNewData, 5000);
+    fetchNewData(); // Load pertama kali
+
+    // Export Excel
+    document.getElementById('exportExcel').addEventListener('click', function () {
+        const wb = XLSX.utils.table_to_book(document.getElementById('exportTable'), {sheet:"Data"});
+        XLSX.writeFile(wb, "DataGabungan.xlsx");
+    });
+
+    // Export PDF
+    document.getElementById('exportPDF').addEventListener('click', function () {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF('l', 'pt', 'a4');
+        doc.html(document.getElementById('exportTable'), {
+            callback: function (pdf) {
+                pdf.save("DataGabungan.pdf");
+            },
+            x: 10,
+            y: 10,
+            html2canvas: { scale: 0.5 }
+        });
+    });
+});
+</script>
 </body>
 </html>
