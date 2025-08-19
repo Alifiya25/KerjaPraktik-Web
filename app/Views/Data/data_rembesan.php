@@ -123,6 +123,12 @@
                         <th rowspan="2" colspan="<?= count($srList) ?>" class="section-sr">Perhitungan Q SR (Liter/Menit)</th>
                         <th rowspan="2" colspan="3" class="section-sr">Perhitungan Bocoran Baru</th>
                         <th rowspan="2" colspan="2" class="section-inti">Perhitungan Inti Galery</th>
+                        <th rowspan="2" colspan="2" class="section-inti">Perhitungan Bawah Bensungan/Spillway</th>
+                        <th rowspan="2" colspan="2" class="section-inti">Perhitungan Tebing Kanan</th>
+                        <th rowspan="2" colspan="1" class="section-inti">Perhitungan Tebing Kanan</th>
+                        <th rowspan="2" colspan="1" class="section-inti">Total Bocoran</th>
+                        <th rowspan="2" colspan="1" class="section-inti">Batasan Maksimal (Tahun)</th>
+                        
                     </tr>
 
                     <!-- Row 2 -->
@@ -164,6 +170,18 @@
 
                         <th>A1</th>
                         <th>Ambang</th>
+
+                        <th>B3 (B1+B2)</th>
+                        <th>Ambang</th>
+
+                        <th>SR</th>
+                        <th>Ambang</th>
+
+                        <th>B5</th>
+
+                        <th>R1</th>
+
+                        <th></th>
                     </tr>
                 </thead>
 
@@ -254,10 +272,40 @@
                             <!-- ✅ Perhitungan Inti Galery -->
                             <td><?= isset($data['perhitungan_inti']['a1']) && $data['perhitungan_inti']['a1'] != 0
                                     ? number_format($data['perhitungan_inti']['a1'], 2, '.', '')
-                                    : '-'; ?></td>
-                            <td><?= isset($data['perhitungan_inti']['ambang']) && $data['perhitungan_inti']['ambang'] != 0
-                                    ? number_format($data['perhitungan_inti']['ambang'], 2, '.', '')
-                                    : '-'; ?></td>
+                                    : '-'; ?>
+                            </td>
+                            <td><?= isset($data['perhitungan_inti']['ambang_a1'])
+                                    ? number_format($data['perhitungan_inti']['ambang_a1'], 2, '.', '')
+                                    : '-'; ?>
+                            </td>
+                            
+                            <!-- ✅ Perhitungan Spillway -->
+                            <td><?= $data['perhitungan_spillway']['B3'] ?? '-' ?></td>
+                            <td><?= isset($data['perhitungan_spillway']['ambang']) 
+                                    ? number_format($data['perhitungan_spillway']['ambang'], 2) 
+                                    : '-' ?>
+                            </td>
+
+                            <!-- ✅ Perhitungan Tebing Kanan -->
+                            <td><?= isset($data['perhitungan_tebing_kanan']['sr']) 
+                                    ? number_format($data['perhitungan_tebing_kanan']['sr'], 2) 
+                                    : '-' ?>
+                            </td>
+                            <td><?= isset($data['perhitungan_tebing_kanan']['ambang']) 
+                                    ? number_format($data['perhitungan_tebing_kanan']['ambang'], 2) 
+                                    : '-' ?>
+                            </td>
+
+                            <td><?= $data['perhitungan_tebing_kanan']['b5'] ?? '-' ?></td>
+
+                            <!-- ✅ Perhitungan Total Bocoran -->
+                             <td><?= isset($data['perhitungan_total_bocoran']['r1']) ? number_format($data['perhitungan_total_bocoran']['r1'], 2) : '-' ?></td>
+
+                             <!-- ✅ Perhitungan Batasan Maksimum -->
+                             <td><?= isset($data['batas_maksimal']) ? number_format($data['batas_maksimal'], 2) : '-' ?></td>
+
+
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

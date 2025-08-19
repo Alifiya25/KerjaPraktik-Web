@@ -1,31 +1,38 @@
-<?php
+<?php 
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-if (!function_exists('cariAmbang')) {
-function cariAmbang($nilaiA1, $sheetAmbang)
-{
-    if ($nilaiA1 === null || $nilaiA1 == 0) {
-        return 0;
-    }
+if (!function_exists('getAmbangData')) {
+    /**
+     * Ambil seluruh data ambang dari sheet Excel jadi array.
+     * Key = string nilai TMA (tidak dibulatkan), Value = ambang_a1
+     */
+    function getAmbangData(Worksheet $sheet): array
+    {
+        $highestRow = $sheet->getHighestRow();
+        $data = [];
 
-    // Ambil semua data dari Sheet1
-    $rows = $sheetAmbang->toArray();
+        for ($row = 5; $row <= $highestRow; $row++) {
+            $valLookup = $sheet->getCell('B' . $row)->getCalculatedValue();
+            $valResult = $sheet->getCell('C' . $row)->getCalculatedValue();
 
-    $closestValue = null;
-    $closestDiff  = PHP_FLOAT_MAX;
+            if ($valLookup === null || $valLookup === '') continue;
 
-    foreach ($rows as $row) {
-        $lookupValue = floatval($row[0]); // Kolom pertama
-        $diff = abs($lookupValue - $nilaiA1);
-
-        if ($diff < $closestDiff) {
-            $closestDiff  = $diff;
-            $closestValue = $row[1]; // Kolom kedua = nilai ambang
+            // Key sebagai string, value tetap float
+            $data[(string)$valLookup] = (float)$valResult;
         }
+
+        return $data;
     }
-
-    return $closestValue ?? 0;
 }
 
+if (!function_exists('cariAmbangArray')) {
+    /**
+     * Cari ambang_a1 berdasarkan TMA persis.
+     * Key dicocokkan sebagai string supaya desimal persis tetap sama.
+     */
+    function cariAmbangArray(float $tma, array $ambangData)
+    {
+        $key = (string)$tma; // pakai string agar tidak terjadi pembulatan
+        return $ambangData[$key] ?? null;
+    }
 }
-
