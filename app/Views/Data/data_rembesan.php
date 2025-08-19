@@ -109,13 +109,13 @@
 
                 <thead>
                     <!-- Row 1 -->
-                    <tr>
-                        <th rowspan="3">Tahun</th>
-                        <th rowspan="3">Bulan</th>
-                        <th rowspan="3">Periode</th>
-                        <th rowspan="3">Tanggal</th>
-                        <th rowspan="3">TMA Waduk</th>
-                        <th rowspan="3">Curah Hujan</th>
+                        <tr>
+                        <th rowspan="3" class="sticky">Tahun</th>
+                        <th rowspan="3" class="sticky-2">Bulan</th>
+                        <th rowspan="3" class="sticky-3">Periode</th>
+                        <th rowspan="3" class="sticky-4">Tanggal</th>
+                        <th rowspan="3" class="sticky-5">TMA Waduk</th>
+                        <th rowspan="3" class="sticky-6">Curah Hujan</th>
                         <th rowspan="2" colspan="<?= count($twHeaders) ?>" class="section-thomson">Thomson Weir</th>
                         <th colspan="<?= $srColspan ?>" class="section-sr">SR</th>
                         <th colspan="6" rowspan="2" class="section-bocoran">Bocoran Baru</th>
@@ -123,7 +123,7 @@
                         <th rowspan="2" colspan="<?= count($srList) ?>" class="section-sr">Perhitungan Q SR (Liter/Menit)</th>
                         <th rowspan="2" colspan="3" class="section-sr">Perhitungan Bocoran Baru</th>
                         <th rowspan="2" colspan="2" class="section-inti">Perhitungan Inti Galery</th>
-                        <th rowspan="2" colspan="2" class="section-inti">Perhitungan Bawah Bensungan/Spillway</th>
+                        <th rowspan="2" colspan="2" class="section-inti">Perhitungan Bawah Bendungan/Spillway</th>
                         <th rowspan="2" colspan="2" class="section-inti">Perhitungan Tebing Kanan</th>
                         <th rowspan="2" colspan="1" class="section-inti">Perhitungan Tebing Kanan</th>
                         <th rowspan="2" colspan="1" class="section-inti">Total Bocoran</th>
@@ -185,35 +185,35 @@
                 </thead>
 
                 <tbody>
-                    <?php
-                    $prevTahun = null;
-                    $tahunCounts = [];
+    <?php
+    $prevTahun = null;
+    $tahunCounts = [];
 
-                    // Hitung jumlah baris per Tahun
-                    foreach ($dataGabungan as $data) {
-                        $tahun = $data['pengukuran']['tahun'] ?? '-';
-                        if (!isset($tahunCounts[$tahun])) $tahunCounts[$tahun] = 0;
-                        $tahunCounts[$tahun]++;
-                    }
+    // Hitung jumlah baris per Tahun
+    foreach ($dataGabungan as $data) {
+        $tahun = $data['pengukuran']['tahun'] ?? '-';
+        if (!isset($tahunCounts[$tahun])) $tahunCounts[$tahun] = 0;
+        $tahunCounts[$tahun]++;
+    }
 
-                    $tahunRowspans = [];
+    $tahunRowspans = [];
 
-                    foreach ($dataGabungan as $index => $data):
-                        $tahun = $data['pengukuran']['tahun'] ?? '-';
-                        $bulan = $data['pengukuran']['bulan'] ?? '-';
-                        $periode = $data['pengukuran']['periode'] ?? '-';
-                    ?>
-                        <tr data-tahun="<?= $tahun ?>" data-bulan="<?= $bulan ?>" data-periode="<?= $periode ?>">
-                            <?php if (!isset($tahunRowspans[$tahun])): ?>
-                                <td rowspan="<?= $tahunCounts[$tahun] ?>"><?= $tahun ?></td>
-                                <?php $tahunRowspans[$tahun] = true; ?>
-                            <?php endif; ?>
+    foreach ($dataGabungan as $index => $data):
+        $tahun = $data['pengukuran']['tahun'] ?? '-';
+        $bulan = $data['pengukuran']['bulan'] ?? '-';
+        $periode = $data['pengukuran']['periode'] ?? '-';
+    ?>
+        <tr data-tahun="<?= $tahun ?>" data-bulan="<?= $bulan ?>" data-periode="<?= $periode ?>">
+            <?php if (!isset($tahunRowspans[$tahun])): ?>
+                <td rowspan="<?= $tahunCounts[$tahun] ?>" class="sticky"><?= $tahun ?></td>
+                <?php $tahunRowspans[$tahun] = true; ?>
+            <?php endif; ?>
 
-                            <td><?= $bulan ?></td>
-                            <td><?= $periode ?></td>
-                            <td><?= $data['pengukuran']['tanggal'] ?? '-' ?></td>
-                            <td><?= $data['pengukuran']['tma_waduk'] ?? '-' ?></td>
-                            <td><?= $data['pengukuran']['curah_hujan'] ?? '-' ?></td>
+            <td class="sticky-2"><?= $bulan ?></td>
+            <td class="sticky-3"><?= $periode ?></td>
+            <td class="sticky-4"><?= $data['pengukuran']['tanggal'] ?? '-' ?></td>
+            <td class="sticky-5"><?= $data['pengukuran']['tma_waduk'] ?? '-' ?></td>
+            <td class="sticky-6"><?= $data['pengukuran']['curah_hujan'] ?? '-' ?></td>
 
                             <!-- Thomson -->
                             <td><?= $data['thomson']['a1_r'] ?? '-' ?></td>

@@ -1,3 +1,5 @@
+/* data.css - Styling for Data Table Page */
+
 :root {
   --primary-color: #3498db;
   --secondary-color: #2ecc71;
@@ -7,16 +9,27 @@
   --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.data-container {
+/* ==== Base Styles ==== */
+body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+/* ==== Container ==== */
+.data-container {
   background-color: white;
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   padding: 25px;
   margin: 20px auto;
   max-width: 95%;
+  overflow: hidden;
 }
 
+/* ==== Header & Controls ==== */
 .table-header {
   display: flex;
   justify-content: space-between;
@@ -31,6 +44,9 @@
   font-weight: 600;
   margin: 0;
   font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .table-controls {
@@ -39,6 +55,7 @@
   flex-wrap: wrap;
 }
 
+/* ==== Filter Section ==== */
 .filter-section {
   background-color: var(--light-color);
   padding: 15px;
@@ -50,41 +67,50 @@
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
+  align-items: flex-end;
 }
 
 .filter-item {
   min-width: 180px;
+  flex: 1 0 auto;
 }
 
+.filter-section h5 {
+  margin-bottom: 15px;
+  color: var(--dark-color);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ==== Table Container ==== */
 .table-responsive {
-  width: 100%;
-  overflow-x: auto;
-  margin-bottom: 20px;
+  position: relative;
+  height: 70vh;
+  overflow: auto;
+  border: 1px solid #ddd;
   border-radius: var(--border-radius);
+  margin-bottom: 20px;
+  background-color: white;
 }
 
+/* ==== Table Styles ==== */
 .data-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   font-size: 0.9rem;
-  white-space: nowrap; /* agar tabel lebar menampilkan scroll horizontal */
-}
-
-.data-table thead th {
-  background-color: var(--primary-color);
-  color: white;
-  padding: 12px;
-  text-align: center;
-  position: sticky;
-  top: 0;
-  z-index: 1;
+  white-space: nowrap;
+  min-width: 1200px;
 }
 
 .data-table th,
 .data-table td {
-  padding: 10px;
+  padding: 10px 8px;
   border: 1px solid #ddd;
   text-align: center;
+  vertical-align: middle;
+  height: 42px;
 }
 
 .data-table tbody tr:nth-child(even) {
@@ -95,31 +121,137 @@
   background-color: rgba(52, 152, 219, 0.1);
 }
 
-/* Highlight per section */
-.section-thomson {
-  background-color: rgba(52, 152, 219, 0.1);
+/* ==== Highlight Sections ==== */
+.section-thomson { background-color: rgba(52, 152, 219, 0.15); }
+.section-sr { background-color: rgba(241, 196, 15, 0.15); }
+.section-bocoran { background-color: rgba(231, 76, 60, 0.15); }
+.section-ambang { background-color: rgba(26, 188, 156, 0.15); }
+.section-inti { background-color: rgba(155, 89, 182, 0.15); }
+
+/* ==== Sticky Headers ==== */
+.data-table thead tr:nth-child(1) th { 
+  position: sticky; 
+  top: 0; 
+  z-index: 210; 
+  background: var(--primary-color); 
+  color: #fff; 
 }
 
-.section-sr {
-  background-color: rgba(241, 196, 15, 0.1);
+.data-table thead tr:nth-child(2) th { 
+  position: sticky; 
+  top: 42px; 
+  z-index: 209; 
+  background: var(--primary-color); 
+  color: #fff; 
 }
 
-.section-bocoran {
-  background-color: rgba(231, 76, 60, 0.1);
+.data-table thead tr:nth-child(3) th { 
+  position: sticky; 
+  top: 84px; 
+  z-index: 208; 
+  background: var(--primary-color); 
+  color: #fff; 
 }
 
-.section-ambang {
-  background-color: rgba(26, 188, 156, 0.1);
+/* ==== Sticky Columns ==== */
+.data-table th.sticky,
+.data-table td.sticky {
+  position: sticky;
+  left: 0;
+  z-index: 220;
+  background: var(--primary-color);
+  color: white;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  min-width: 60px;
 }
 
-/* Tombol Export */
-.export-buttons {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  margin-top: 20px;
+.data-table th.sticky-2,
+.data-table td.sticky-2 {
+  position: sticky;
+  left: 60px;
+  z-index: 220;
+  background: var(--primary-color);
+  color: white;
+  min-width: 50px;
 }
 
+.data-table th.sticky-3,
+.data-table td.sticky-3 {
+  position: sticky;
+  left: 110px;
+  z-index: 220;
+  background: var(--primary-color);
+  color: white;
+  min-width: 70px;
+}
+
+.data-table th.sticky-4,
+.data-table td.sticky-4 {
+  position: sticky;
+  left: 180px;
+  z-index: 220;
+  background: var(--primary-color);
+  color: white;
+  min-width: 90px;
+}
+
+.data-table th.sticky-5,
+.data-table td.sticky-5 {
+  position: sticky;
+  left: 270px;
+  z-index: 220;
+  background: var(--primary-color);
+  color: white;
+  min-width: 80px;
+}
+
+.data-table th.sticky-6,
+.data-table td.sticky-6 {
+  position: sticky;
+  left: 350px;
+  z-index: 220;
+  background: var(--primary-color);
+  color: white;
+  min-width: 80px;
+}
+
+/* Special handling for sticky column headers */
+.data-table thead tr:nth-child(1) th.sticky {
+  top: 0;
+  z-index: 230;
+}
+
+.data-table thead tr:nth-child(1) th.sticky-2 {
+  top: 0;
+  left: 60px;
+  z-index: 230;
+}
+
+.data-table thead tr:nth-child(1) th.sticky-3 {
+  top: 0;
+  left: 110px;
+  z-index: 230;
+}
+
+.data-table thead tr:nth-child(1) th.sticky-4 {
+  top: 0;
+  left: 180px;
+  z-index: 230;
+}
+
+.data-table thead tr:nth-child(1) th.sticky-5 {
+  top: 0;
+  left: 270px;
+  z-index: 230;
+}
+
+.data-table thead tr:nth-child(1) th.sticky-6 {
+  top: 0;
+  left: 350px;
+  z-index: 230;
+}
+
+/* ==== Buttons ==== */
 .btn {
   padding: 8px 16px;
   border-radius: var(--border-radius);
@@ -130,70 +262,145 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
+  font-size: 0.9rem;
 }
 
-.btn-primary {
-  background-color: var(--primary-color);
-  color: white;
+.btn-primary { 
+  background-color: var(--primary-color); 
+  color: white; 
 }
 
-.btn-success {
-  background-color: var(--secondary-color);
-  color: white;
+.btn-success { 
+  background-color: var(--secondary-color); 
+  color: white; 
 }
 
-.btn:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
+.btn-outline-primary { 
+  border: 1px solid var(--primary-color); 
+  color: var(--primary-color); 
+  background: transparent; 
 }
 
-/* Responsive behavior */
+.btn-outline-success { 
+  border: 1px solid var(--secondary-color); 
+  color: var(--secondary-color); 
+  background: transparent; 
+}
+
+.btn:hover { 
+  opacity: 0.9; 
+  transform: translateY(-2px); 
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+}
+
+.btn-group { 
+  display: flex; 
+  gap: 8px; 
+  flex-wrap: wrap; 
+}
+
+/* ==== Form Elements ==== */
+.form-select, 
+.form-control { 
+  padding: 8px 12px; 
+  border: 1px solid #ddd; 
+  border-radius: var(--border-radius); 
+  font-size: 0.9rem; 
+  width: 100%; 
+}
+
+.form-label { 
+  display: block; 
+  margin-bottom: 5px; 
+  font-weight: 500; 
+  font-size: 0.9rem; 
+}
+
+.input-group { 
+  display: flex; 
+  align-items: stretch; 
+}
+
+.input-group-text { 
+  padding: 8px 12px; 
+  background-color: #f1f1f1; 
+  border: 1px solid #ddd; 
+  border-right: none; 
+  border-radius: var(--border-radius) 0 0 var(--border-radius); 
+  display: flex; 
+  align-items: center; 
+}
+
+.input-group .form-control { 
+  border-radius: 0 var(--border-radius) var(--border-radius) 0; 
+  border-left: none; 
+}
+
+/* ==== Export Buttons ==== */
+.export-buttons { 
+  display: flex; 
+  gap: 10px; 
+  justify-content: flex-end; 
+  margin-top: 20px; 
+  flex-wrap: wrap; 
+}
+
+/* ==== Responsive Styles ==== */
+@media (max-width: 992px) {
+  .data-container { 
+    padding: 15px; 
+  }
+  
+  .table-header { 
+    flex-direction: column; 
+    align-items: stretch; 
+    gap: 15px; 
+  }
+  
+  .table-controls { 
+    width: 100%; 
+  }
+  
+  .filter-group { 
+    flex-direction: column; 
+    gap: 10px; 
+  }
+  
+  .filter-item { 
+    width: 100%; 
+  }
+}
+
 @media (max-width: 768px) {
-  .table-header {
-    flex-direction: column;
-    align-items: flex-start;
+  .data-table th, 
+  .data-table td { 
+    padding: 8px 5px; 
+    font-size: 0.8rem; 
   }
-
-  .filter-group {
-    flex-direction: column;
-    gap: 10px;
+  
+  .btn { 
+    padding: 6px 12px; 
+    font-size: 0.8rem; 
   }
-
-  .filter-item {
-    width: 100%;
-  }
-
-  .data-table th,
-  .data-table td {
-    padding: 8px 5px;
-    font-size: 0.8rem;
+  
+  .table-title { 
+    font-size: 1.3rem; 
   }
 }
-/* ==== Scroll Wrapper Fix: Scrollbar always visible like Excel ==== */
-.scroll-wrapper {
-    position: relative;
-    padding-bottom: 15px; /* space for scrollbar */
-}
 
-.scroll-inner {
-    overflow-x: auto;
-    overflow-y: visible;
-    width: 100%;
-    white-space: nowrap;
-    padding-bottom: 10px;
-}
-
-/* Optional scrollbar styling */
-.scroll-inner::-webkit-scrollbar {
-    height: 12px;
-}
-.scroll-inner::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-.scroll-inner::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 6px;
-}
-.scroll-inner::-webkit-scrollbar-thumb:hover {
-    background: #555;
+@media (max-width: 576px) {
+  .data-container { 
+    padding: 10px; 
+    margin: 10px auto; 
+  }
+  
+  .export-buttons { 
+    justify-content: center; 
+  }
+  
+  .export-buttons .btn { 
+    flex: 1 0 auto; 
+    text-align: center; 
+    justify-content: center; 
+  }
 }
